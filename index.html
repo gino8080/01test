@@ -27,10 +27,12 @@
             document.addEventListener("deviceready",onDeviceReady,false);
             
 			function loadPage(){
-				console.log("test");
-				$('#result').load('http://m.bulgari.com');
+			  $.getJSON("http://192.168.1.213:8888/bulgari_responsive/api/get_recent_posts/ ",function(data) {
+				  console.log("SUCCESS");
+       			 $('#result').append('<a href="'+data.posts[0].url+'"><div id="homeblog">'+data.posts[0].title+'</div></a>');
+  			  });
 				
-				}
+				};
             // Cordova is ready to be used!
             //
             function getPhoto() {
