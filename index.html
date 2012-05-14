@@ -2,8 +2,7 @@
 <html>
   <head>
   <title></title>
-  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
 	<meta charset="utf-8">
 
 
@@ -13,8 +12,13 @@
 	-->
 	<!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
 	<script type="text/javascript" charset="utf-8" src="cordova-1.7.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
         <script type="text/javascript" charset="utf-8">
-            
+             $(document).bind("mobileinit", function () {
+           		$.mobile.allowCrossDomainPages = true;
+        	});
+		
             var pictureSource;   // picture source
             var destinationType; // sets the format of returned value 
             
@@ -22,9 +26,14 @@
             //
             document.addEventListener("deviceready",onDeviceReady,false);
             
+			function loadPage(){
+				console.log("test");
+				$('#result').load('http://m.bulgari.com');
+				
+				}
             // Cordova is ready to be used!
             //
-            function onDeviceReady() {
+            function getPhoto() {
                 pictureSource=navigator.camera.PictureSourceType;
                 destinationType=navigator.camera.DestinationType;
             }
@@ -99,15 +108,48 @@
             function onFail(message) {
                 alert('Failed because: ' + message);
             }
+			
+			function getGeo() {
+      			  navigator.geolocation.getCurrentPosition(onSuccess, onError);
+   			 }	
+			
+			// onSuccess Geolocation
+			//
+			function onSuccess(position) {
+				var element = document.getElementById('geolocation');
+				element.innerHTML = 'Latitude: '           + position.coords.latitude              + '<br />' +
+									'Longitude: '          + position.coords.longitude             + '<br />' +
+									'Altitude: '           + position.coords.altitude              + '<br />' +
+									'Accuracy: '           + position.coords.accuracy              + '<br />' +
+									'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
+									'Heading: '            + position.coords.heading               + '<br />' +
+									'Speed: '              + position.coords.speed                 + '<br />' +
+									'Timestamp: '          + new Date(position.timestamp)          + '<br />';
+			}
+		
+			// onError Callback receives a PositionError object
+			//
+			function onError(error) {
+				alert('code: '    + error.code    + '\n' +
+					  'message: ' + error.message + '\n');
+			}
+
             
             </script>
         </head>
     <body>
+    
+     <button onclick="loadPage();">LOAD</button> <br>
+       
+    <div id="result" style="width:600px;height:400px;"></div>
         <button onclick="capturePhoto();">Capture Photo</button> <br>
         <button onclick="capturePhotoEdit();">Capture Editable Photo</button> <br>
         <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
         <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
         <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
         <img style="display:none;" id="largeImage" src="" />
+        <button onclick="getGeo();">From Photo Album</button><br>
+        
+         <p id="geolocation">Finding geolocation...</p>
     </body>
 </html>
