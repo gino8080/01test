@@ -1,157 +1,57 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  <title></title>
- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
-	<meta charset="utf-8">
+            <head>
+            <title></title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+            <meta charset="utf-8">
 
-
-	<!-- iPad/iPhone specific css below, add after your main css >
+            <!-- iPad/iPhone specific css below, add after your main css >
 	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
 	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />		
 	-->
-	<!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
-	<script type="text/javascript" charset="utf-8" src="cordova-1.7.0.js"></script>
-    <script type="text/javascript" charset="utf-8" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+            <!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
+            <script type="text/javascript" charset="utf-8" src="cordova-1.7.0.js"></script>
+            <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+            <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+            <script src="main.js"></script>
+            <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+          
+            </head>
+            <body>
+<div data-role="page" id="home">
 
-        <script type="text/javascript" charset="utf-8">
-             $(document).bind("mobileinit", function () {
-           		$.mobile.allowCrossDomainPages = true;
-        	});
-		
-            var pictureSource;   // picture source
-            var destinationType; // sets the format of returned value 
-            
-            // Wait for Cordova to connect with the device
-            //
-            document.addEventListener("deviceready",onDeviceReady,false);
-            
-			function loadPage(){
-			  $.getJSON("http://192.168.1.213:8888/bulgari_responsive/api/get_recent_posts/ ",function(data) {
-				  console.log("SUCCESS");
-       			 $('#result').append('<a href="'+data.posts[0].url+'"><div id="homeblog">'+data.posts[0].title+'</div></a>');
-  			  });
-				
-				};
-            // Cordova is ready to be used!
-            //
-            function getPhoto() {
-                pictureSource=navigator.camera.PictureSourceType;
-                destinationType=navigator.camera.DestinationType;
-            }
-            
-            // Called when a photo is successfully retrieved
-            //
-            function onPhotoDataSuccess(imageData) {
-                // Uncomment to view the base64 encoded image data
-                // console.log(imageData);
-                
-                // Get image handle
-                //
-                var smallImage = document.getElementById('smallImage');
-                
-                // Unhide image elements
-                //
-                smallImage.style.display = 'block';
-                
-                // Show the captured photo
-                // The inline CSS rules are used to resize the image
-                //
-                smallImage.src = "data:image/jpeg;base64," + imageData;
-            }
-            
-            // Called when a photo is successfully retrieved
-            //
-            function onPhotoURISuccess(imageURI) {
-                // Uncomment to view the image file URI 
-                // console.log(imageURI);
-                
-                // Get image handle
-                //
-                var largeImage = document.getElementById('largeImage');
-                
-                // Unhide image elements
-                //
-                largeImage.style.display = 'block';
-                
-                // Show the captured photo
-                // The inline CSS rules are used to resize the image
-                //
-                largeImage.src = imageURI;
-            }
-            
-            // A button will call this function
-            //
-            function capturePhoto() {
-                // Take picture using device camera and retrieve image as base64-encoded string
-                navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50,
-                                            destinationType: destinationType.DATA_URL });
-            }
-            
-            // A button will call this function
-            //
-            function capturePhotoEdit() {
-                // Take picture using device camera, allow edit, and retrieve image as base64-encoded string  
-                navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
-                                            destinationType: destinationType.DATA_URL });
-            }
-            
-            // A button will call this function
-            //
-            function getPhoto(source) {
-                // Retrieve image file location from specified source
-                navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50, 
-                                            destinationType: destinationType.FILE_URI,
-                                            sourceType: source });
-            }
-            
-            // Called if something bad happens.
-            // 
-            function onFail(message) {
-                alert('Failed because: ' + message);
-            }
-			
-			function getGeo() {
-      			  navigator.geolocation.getCurrentPosition(onSuccess, onError);
-   			 }	
-			
-			// onSuccess Geolocation
-			//
-			function onSuccess(position) {
-				var element = document.getElementById('geolocation');
-				element.innerHTML = 'Latitude: '           + position.coords.latitude              + '<br />' +
-									'Longitude: '          + position.coords.longitude             + '<br />' +
-									'Altitude: '           + position.coords.altitude              + '<br />' +
-									'Accuracy: '           + position.coords.accuracy              + '<br />' +
-									'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
-									'Heading: '            + position.coords.heading               + '<br />' +
-									'Speed: '              + position.coords.speed                 + '<br />' +
-									'Timestamp: '          + new Date(position.timestamp)          + '<br />';
-			}
-		
-			// onError Callback receives a PositionError object
-			//
-			function onError(error) {
-				alert('code: '    + error.code    + '\n' +
-					  'message: ' + error.message + '\n');
-			}
-
-            
-            </script>
-        </head>
-    <body>
+          <div data-theme="a" data-role="header" data-position="fixed">  <h3> HOME </h3> </div>
+          
+          <div data-role="content">
+            <button onclick="loadPage();">LOAD</button>
+            <div id="result" style="width:600px;height:400px;"></div>
+            <button onclick="capturePhoto();">Capture Photo</button>
+            <br>
+            <button onclick="capturePhotoEdit();">Capture Editable Photo</button>
+            <br>
+            <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button>
+            <br>
+            <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button>
+            <br>
+            <img style="display:none;width:60px;height:60px;" id="smallImage" src="" /> <img style="display:none;" id="largeImage" src="" />
     
-     <button onclick="loadPage();">LOAD</button> <br>
-       
-    <div id="result" style="width:600px;height:400px;"></div>
-        <button onclick="capturePhoto();">Capture Photo</button> <br>
-        <button onclick="capturePhotoEdit();">Capture Editable Photo</button> <br>
-        <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
-        <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
-        <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
-        <img style="display:none;" id="largeImage" src="" />
-        <button onclick="getGeo();">From Photo Album</button><br>
-        
-         <p id="geolocation">Finding geolocation...</p>
-    </body>
+        </div>
+	
+    <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
+    	<div data-role="navbar" data-iconpos="top">
+            <ul>
+                <li> <a href="index.html" data-theme="" data-icon="home" class="ui-btn-active ui-state-persist" > HOME </a> </li>
+                <li> <a href="news.html" data-theme="" data-icon="check" > NEWS </a> </li>
+                <li> <a href="stores.html" data-theme="" data-icon="info"> STORES </a> </li>
+                <li> <a href="contact.html" data-theme="" data-icon="star"> CONTACT </a> </li>
+            </ul>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+</body>
 </html>
