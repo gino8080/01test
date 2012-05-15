@@ -1,8 +1,20 @@
 // JavaScript Document
  $(document).bind("mobileinit", function () {
-           		//$.mobile.allowCrossDomainPages = true;
-				$.mobile.defaultPageTransition = "slide";
-        	});
+           		$.mobile.allowCrossDomainPages = true;
+				//$.mobile.defaultPageTransition = "slide";
+				
+		$("#news").bind("pageshow", function onPageShow(event, ui)
+		{
+			$.mobile.pageLoading();
+			refreshFeed();
+		});
+	
+		$("#news").bind("pagehide", function onPageHide(event, ui)
+		{
+			$("#news ul").empty();
+		});
+	
+	});
 		
             var pictureSource;   // picture source
             var destinationType; // sets the format of returned value 
@@ -131,3 +143,22 @@
 				alert('code: '    + error.code    + '\n' +
 					  'message: ' + error.message + '\n');
 			}
+
+	
+	function refreshFeed()
+	{
+		 $.getJSON("http://192.168.1.213:8888/bulgari_responsive/api/get_recent_posts/ ",function(data) {
+				  console.log("SUCCESS");
+				  console.log(data.posts);
+				  
+				  $(data.posts).each(function(index, element) {
+					  	$("#news ul").append('<li><a href="'+data.posts[index].url+'">'+data.posts[index].title+'</a></li>');
+				  });
+				
+				$('#news ul').listview('refresh');
+				$.mobile.pageLoading( true );
+       			 
+  			  });
+			  
+	
+	}
