@@ -175,10 +175,66 @@
 				//$.mobile.pageLoading( true );
                 }
             });
-     
-	 
-		
-		
-			  
 	
 	}
+
+
+
+function saveLogin(){
+	window.localStorage.setItem("login", $('#login').val());
+	}
+	
+	function readLogin(){
+		  var login = window.localStorage.getItem("login");
+
+    if (login != null) {
+        $('#login').val(login);
+    }
+		}
+
+// Populate the database 
+//
+function populateDB(tx) {
+    tx.executeSql('DROP TABLE IF EXISTS DEMO');
+    tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id unique, data)');
+    tx.executeSql('INSERT INTO DEMO (id, data) VALUES (1, "First row")');
+    tx.executeSql('INSERT INTO DEMO (id, data) VALUES (2, "Second row")');
+}
+
+// Query the database
+//
+function queryDB(tx) {
+    tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+}
+
+// Query the success callback
+//
+function querySuccess(tx, results) {
+    // this will be empty since no rows were inserted.
+    console.log("Insert ID = " + results.insertId);
+    // this will be 0 since it is a select statement
+    console.log("Rows Affected = " + results.rowAffected);
+    // the number of rows returned by the select statement
+    console.log("Insert ID = " + results.rows.length);
+}
+
+// Transaction error callback
+//
+function errorCB(err) {
+    console.log("Error processing SQL: "+err.code);
+}
+
+// Transaction success callback
+//
+function successCB() {
+    var db = window.openDatabase("test", "1.0", "PhoneGap test", 200000);
+    db.transaction(queryDB, errorCB);
+}
+
+// PhoneGap is ready
+//
+function creatDB() {
+    var db = window.openDatabase("test", "1.0", "PhoneGap test", 200000);
+    db.transaction(populateDB, errorCB, successCB);
+}
+
