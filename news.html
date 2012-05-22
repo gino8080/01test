@@ -10,12 +10,12 @@
 	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />		
 	-->
 <!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
-  <script type="text/javascript" charset="utf-8" src="cordova-1.7.0.js"></script>
-            <link rel="stylesheet" href="jquery.mobile.1.1.0.min.css" />
-            <script src="jquery-1.6.4.min.js"></script>
-            <script src="main.js"></script>
-            <script src="jquery.mobile-1.1.0.min.js"></script>
-           <script src="jfeed.js"></script>
+<script type="text/javascript" charset="utf-8" src="cordova-1.7.0.js"></script>
+<link rel="stylesheet" href="jquery.mobile.1.1.0.min.css" />
+<script src="jquery-1.6.4.min.js"></script>
+<script src="main.js"></script>
+<script src="jquery.mobile-1.1.0.min.js"></script>
+<script src="jfeed.js"></script>
 </head>
 <body>
 <div data-role="page" id="news">
@@ -23,11 +23,12 @@
     <h3> NEWS </h3>
   </div>
   <div data-role="content" class="content">
-  <button onclick="refreshFeed();">LOAD</button>
-        <ul data-role="listview" data-inset="true" data-theme="a">
-
-        </ul>
+    <button onclick="refreshFeed();">LOAD</button>
+    <div id="newslist">
+      <ul data-role="listview" data-inset="true" data-theme="a">
+      </ul>
     </div>
+  </div>
   <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
     <div data-role="navbar" data-iconpos="top">
       <ul>
@@ -39,5 +40,25 @@
     </div>
   </div>
 </div>
+
+<div data-role="page" id="detail">
+  <div data-theme="a" data-role="header" data-position="fixed" data-add-back-btn="true" >
+    <h3>  </h3>
+  </div>
+  <div data-role="content" class="content">
+  
+  </div>
+  <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
+    <div data-role="navbar" data-iconpos="top">
+      <ul>
+        <li> <a href="index.html" data-theme="" data-icon="home"  > HOME </a> </li>
+        <li> <a href="news.html" data-theme="" data-icon="check"  class="ui-btn-active ui-state-persist"> NEWS </a> </li>
+        <li> <a href="stores.html" data-theme="" data-icon="info"> STORES </a> </li>
+        <li> <a href="contact.html" data-theme="" data-icon="star"> CONTACT </a> </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

@@ -1,20 +1,33 @@
 // JavaScript Document
+
  $(document).bind("mobileinit", function () {
            		$.mobile.allowCrossDomainPages = true;
 				//$.mobile.defaultPageTransition = "slide";
-				
-		$("#news").bind("pageshow", function onPageShow(event, ui)
-		{
-			$.mobile.pageLoading();
-			refreshFeed();
 		});
 	
-		$("#news").bind("pagehide", function onPageHide(event, ui)
-		{
-			$("#news ul").empty();
-		});
+	$(document).ready(function(){
+ 
+        $("#useJSONP").click(function(){
+            $.ajax({
+                url: 'http://beta.01tribe.com/responsive/wordpress/api/get_recent_posts/ ',
+                //data: {name: 'Chad'},
+                dataType: 'jsonp',
+                jsonp: 'callback',
+                jsonpCallback: 'jsonpCallback',
+                success: function(){
+                    alert("success");
+                }
+            });
+        });
+ 
+    });
+ 
+    function jsonpCallback(data){
+		console.log(data);
+        $('#jsonpResult').text(data.message);
+    }
 	
-	});
+	
 		
             var pictureSource;   // picture source
             var destinationType; // sets the format of returned value 
@@ -24,12 +37,12 @@
             //document.addEventListener("deviceready",onDeviceReady,false);
             
 			function loadPage(){
-				$("header").load("http://192.168.1.213:8888/bulgari_responsive/header.php",function(data){
+				/*$("header").load("http://192.168.1.213:8888/bulgari_responsive/header.php",function(data){
 					
 					console.log(data);
-					})
+					})*/
 				
-			  $.getJSON("http://192.168.1.213:8888/bulgari_responsive/api/get_recent_posts/ ",function(data) {
+			  $.getJSON("http://beta.01tribe.com/responsive/wordpress/api/get_recent_posts/ ",function(data) {
 				  console.log("SUCCESS");
 				  console.log(data.posts);
 				  $(data.posts).each(function(index, element) {
@@ -147,18 +160,25 @@
 	
 	function refreshFeed()
 	{
-		 $.getJSON("http://192.168.1.213:8888/bulgari_responsive/api/get_recent_posts/ ",function(data) {
-				  console.log("SUCCESS");
-				  console.log(data.posts);
-				  
-				  $(data.posts).each(function(index, element) {
-					  	$("#news ul").append('<li><a href="'+data.posts[index].url+'">'+data.posts[index].title+'</a></li>');
-				  });
-				
-				$('#news ul').listview('refresh');
-				$.mobile.pageLoading( true );
-       			 
-  			  });
+		
+            $.ajax({
+                url: 'http://beta.01tribe.com/responsive/wordpress/api/get_recent_posts/ ',
+                //data: {name: 'Chad'},
+                dataType: 'jsonp',
+                jsonp: 'callback',
+                jsonpCallback: 'jsonpCallback',
+                success: function(data){
+                     $(data.posts).each(function(index, element) {
+					  	$("#newslist ul").append('<li ><a href="#detail">'+data.posts[index].title+'</a></li>').data("article",data.posts[index]);
+					});
+				  $('#newslist ul').listview('refresh');
+				//$.mobile.pageLoading( true );
+                }
+            });
+     
+	 
+		
+		
 			  
 	
 	}
