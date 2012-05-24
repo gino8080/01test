@@ -15,7 +15,11 @@
             <script src="jquery-1.6.4.min.js"></script>
             <script src="main.js"></script>
             <script src="jquery.mobile-1.1.0.min.js"></script>
-           <script src="jfeed.js"></script>
+
+<!-- MAP -->    
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="map.js"></script>
+
 
 </head>
 <body>
@@ -26,6 +30,11 @@
           <div data-theme="a" data-role="header" data-position="fixed">  <h3> STORES </h3> </div>
           
           <div data-role="content">
+           <article>
+      <p>Finding your location: <span id="status">checking...</span></p>
+    </article>
+          	 <div id="mappa" style="margin:0 auto;width:560px" />
+            
           <input id="login" />
             <button onclick="saveLogin();">SAVE</button>
              <button onclick="readLogin();">READ</button>

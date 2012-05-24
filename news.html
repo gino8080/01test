@@ -15,20 +15,85 @@
 <script src="jquery-1.6.4.min.js"></script>
 <script src="main.js"></script>
 <script src="jquery.mobile-1.1.0.min.js"></script>
-<script src="jfeed.js"></script>
+
+    
 </head>
 <body>
 <div data-role="page" id="news">
   <div data-theme="a" data-role="header" data-position="fixed">
     <h3> NEWS </h3>
   </div>
+  
   <div data-role="content" class="content">
+ 
+        <div class="container">
+        
+            <div class="row">
+                <div class="span4">
+                    <div class="well">
+                        <a id="reset" href="#" class="btn"><i class="icon-trash"></i> Reset Local Database</a>
+        
+                        <p>Delete all rows from the employee table in the local SQLite database. Does not require network
+                        connectivity.</p>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="well">
+                        <a id="sync"  href="#" class="btn"><i class="icon-refresh"></i> Sync with Server</a>
+                        <p>Get changes from server and update local database accordingly. Requires network connectivity.</p>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="well">
+                        <a id="render" href="#" class="btn"><i class="icon-list"></i> Render List</a>
+        
+                        <p>Render the employee list using the data from the local SQLite database. Does not require network
+                        connectivity.</p>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="span12">
+                    Log:
+                    <textarea id="log" style="width:99%" rows="5"></textarea>
+                    <a id="clearLog" href="#" class="btn"><i class="icon-remove"></i> Clear</a>
+                </div>
+            </div>
+        
+            <br/>
+        
+            <div class="row">
+                <div class=span12>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Title</th>
+                            <th>Phone</th>
+                            <th>Deleted</th>
+                            <th>Last Modified</th>
+                        </tr>
+                        </thead>
+                        <tbody id="list"></tbody>
+                    </table>
+        
+                </div>
+            </div>
+        
+        </div>
+
+
     <button onclick="refreshFeed();">LOAD</button>
     <div id="newslist">
       <ul data-role="listview" data-inset="true" data-theme="a">
       </ul>
     </div>
-  </div>
+    
+</div>
+
   <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
     <div data-role="navbar" data-iconpos="top">
       <ul>
@@ -41,24 +106,6 @@
   </div>
 </div>
 
-<div data-role="page" id="detail">
-  <div data-theme="a" data-role="header" data-position="fixed" data-add-back-btn="true" >
-    <h3>  </h3>
-  </div>
-  <div data-role="content" class="content">
-  
-  </div>
-  <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
-    <div data-role="navbar" data-iconpos="top">
-      <ul>
-        <li> <a href="index.html" data-theme="" data-icon="home"  > HOME </a> </li>
-        <li> <a href="news.html" data-theme="" data-icon="check"  class="ui-btn-active ui-state-persist"> NEWS </a> </li>
-        <li> <a href="stores.html" data-theme="" data-icon="info"> STORES </a> </li>
-        <li> <a href="contact.html" data-theme="" data-icon="star"> CONTACT </a> </li>
-      </ul>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>

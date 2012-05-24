@@ -184,31 +184,33 @@ window.dao =  {
 };
 
 
-$('#reset').on('click', function() {
-    dao.dropTable(function() {
-       dao.createTable();
-    });
+$( '#news' ).live( 'pagecreate',function(event){
+	
+		$('#reset').click( function() {
+			dao.dropTable(function() {
+			   dao.createTable();
+			});
+		});
+		
+		
+		$('#sync').click( function() {
+					  console.log("SYNC");
+			dao.sync(renderList);
+		});
+		
+		$('#render').click( function() {
+			renderList();
+		});
+		
+		$('#clearLog').click( function() {
+						  console.log("INIT DB");
+						 dao.initialize(function() {
+										 console.log('database initialized');
+										 });
+		
+			$('#log').val('');
+		});
 });
-
-
-$('#sync').on('click', function() {
-              console.log("SYNC");
-    dao.sync(renderList);
-});
-
-$('#render').on('click', function() {
-    renderList();
-});
-
-$('#clearLog').on('click', function() {
-                  console.log("INIT DB");
-                 dao.initialize(function() {
-                                 console.log('database initialized');
-                                 });
-
-    $('#log').val('');
-});
-
 function renderList(employees) {
     log('Rendering list using local SQLite data...');
     dao.findAll(function(employees) {
