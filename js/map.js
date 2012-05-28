@@ -1,10 +1,4 @@
-$( '#stores' ).live( 'pagecreate',function(event){
-	console.log("STORES");
-	getGeo();
-				
-	
 
-});
 
 
 function getGeo() {

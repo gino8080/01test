@@ -131,27 +131,6 @@ window.dao =  {
                 alert(response.responseText);
             }
         });
-		
-		  /*    $.ajax({
-                url: syncURL,
-                data: {modifiedSince: modifiedSince},
-            	dataType: 'jsonp',
-                jsonp: 'callback',
-                jsonpCallback: 'jsonpCallback',
-                success:function (data) {
-					log("The server returned " + data.length + " changes that occurred after " + modifiedSince);
-					callback(data);
-				},
-				error: function(model, response) {
-					alert(response.responseText);
-				}
-            });*/
-      
- 
-   
- 
-
-
     },
 
     applyChanges: function(employees, callback) {
@@ -184,33 +163,6 @@ window.dao =  {
 };
 
 
-$( '#news' ).live( 'pagecreate',function(event){
-	
-		$('#reset').click( function() {
-			dao.dropTable(function() {
-			   dao.createTable();
-			});
-		});
-		
-		
-		$('#sync').click( function() {
-					  console.log("SYNC");
-			dao.sync(renderList);
-		});
-		
-		$('#render').click( function() {
-			renderList();
-		});
-		
-		$('#clearLog').click( function() {
-						  console.log("INIT DB");
-						 dao.initialize(function() {
-										 console.log('database initialized');
-										 });
-		
-			$('#log').val('');
-		});
-});
 function renderList(employees) {
     log('Rendering list using local SQLite data...');
     dao.findAll(function(employees) {
@@ -243,3 +195,5 @@ function  callback(){
 		console.log(data);
         $('#jsonpResult').text(data.message);
     }
+
+

@@ -1,31 +1,28 @@
 <!DOCTYPE html>
 <html>
-            <head>
-            <title></title>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
-            <meta charset="utf-8">
+    <head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+    <meta charset="utf-8">
 
-            <!-- iPad/iPhone specific css below, add after your main css >
+    <!-- iPad/iPhone specific css below, add after your main css >
 	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
 	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />		
 	-->
-            <!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
-            <script type="text/javascript" charset="utf-8" src="cordova-1.7.0.js"></script>
-            <link rel="stylesheet" href="jquery.mobile.1.1.0.min.css" />
-            <script src="jquery-1.6.4.min.js"></script>
-            <script src="main.js"></script>
-            <script src="jquery.mobile-1.1.0.min.js"></script>
+    <!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
+    <script type="text/javascript" charset="utf-8" src="cordova-1.7.0.js"></script>
+    <script type="text/javascript" src="js/ChildBrowser.js"></script>
+    <link rel="stylesheet" href="css/jquery.mobile.1.1.0.min.css" />
+    <script src="js/jquery-1.6.4.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/jquery.mobile-1.1.0.min.js"></script>
 
-           
-           <link href="photoswipe.css" type="text/css" rel="stylesheet" />
-	
-	<script type="text/javascript" src="klass.min.js"></script>
-
-	
-	<script type="text/javascript" src="code.photoswipe.jquery-3.0.4.min.js"></script>
+    <script type="text/javascript" src="js/klass.min.js"></script>
+    <link href="css/photoswipe.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="js/code.photoswipe.jquery-3.0.4.min.js"></script>
     <script type="text/javascript">
 
-		(function(window, $, PhotoSwipe){
+	/*	(function(window, $, PhotoSwipe){
 			
 			$(document).ready(function(){
 				
@@ -35,82 +32,66 @@
 			});
 			
 			
-		}(window, window.jQuery, window.Code.PhotoSwipe));
+		}(window, window.jQuery, window.Code.PhotoSwipe));*/
 		
 	</script>
-    
- 
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-        }
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
+  
+  
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <script type="text/javascript" src="app.js"></script>
-    
-    
-<!-- MAP -->    
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-<script type="text/javascript" src="map.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <script type="text/javascript" src="js/app.js"></script>
 
+    <!-- MAP -->
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    <script type="text/javascript" src="js/map.js"></script>
 
+    </head>
 
-            </head>
-            <body>
-<div data-role="page" id="home">
-
-          <div data-theme="a" data-role="header" data-position="fixed">  <h3> HOME </h3> </div>
-          
-          <div data-role="content">
-          <ul id="Gallery" class="gallery">
-		
-            <li><a href="images/full/001.jpg" data-ajax="false" ><img src="images/thumb/001.jpg" alt="Image 001" /></a></li>
-            <li><a href="images/full/002.jpg" data-ajax="false" ><img src="images/thumb/002.jpg" alt="Image 002" /></a></li>
-            <li><a href="images/full/003.jpg" data-ajax="false" ><img src="images/thumb/003.jpg" alt="Image 003" /></a></li>
-           
-        </ul>
-	
-    
-          <input type="button" id="useJSONP" value="Use JSONP"><br /><br />
-    <span id="jsonpResult"></span>
-    
-    
-            <button onclick="loadPage();">LOAD</button>
-            <div id="result" style="width:600px;height:400px;"></div>
-            <button onclick="capturePhoto();">Capture Photo</button>
-            <br>
-            <button onclick="capturePhotoEdit();">Capture Editable Photo</button>
-            <br>
-            <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button>
-            <br>
-            <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button>
-            <br>
-            <img style="display:none;width:60px;height:60px;" id="smallImage" src="" /> <img style="display:none;" id="largeImage" src="" />
-    
+    <body>
+    <div data-role="page" id="home">
+      <div data-theme="a" data-role="header" data-position="fixed">
+        <h3> HOME </h3>
+      </div>
+      
+      
+      
+      
+      <div data-role="content">
+        <button onclick="openWin();">Open Win</button>
+ 
+        <div id="header"></div>
+     
+        <ul id="Gallery" class="gallery">
+         <!-- <li><a href="images/full/001.jpg" data-ajax="false" ><img src="images/thumb/001.jpg" alt="Image 001" /></a></li>-->
+          </ul>
+        
+        <button  id="useJSONP" onClick="loadJsonP();">loadJsonP</button>
+     
+        <span id="jsonpResult"></span>
+        <button onclick="loadPage();">LOAD</button>
+        <div id="result" style="width:600px;height:400px;"></div>
+      
+      
+      
+      
+      
+      
+      <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
+        <div data-role="navbar" data-iconpos="top">
+          <ul>
+            <li> <a href="index.html" data-theme="" data-icon="home" class="ui-btn-active ui-state-persist" > HOME </a> </li>
+            <li> <a href="news.html" data-theme="" data-icon="check"  > NEWS </a> </li>
+            <li> <a href="stores.html" data-theme="" data-icon="info"> STORES </a> </li>
+            <li> <a href="contact.html" data-theme="" data-icon="star"> CONTACT </a> </li>
+          </ul>
         </div>
-	
-    <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
-    	<div data-role="navbar" data-iconpos="top">
-            <ul>
-                <li> <a href="index.html" data-theme="" data-icon="home" class="ui-btn-active ui-state-persist" > HOME </a> </li>
-                <li> <a href="news.html" data-theme="" data-icon="check"  > NEWS </a> </li>
-                <li> <a href="stores.html" data-theme="" data-icon="info"> STORES </a> </li>
-                <li> <a href="contact.html" data-theme="" data-icon="star"> CONTACT </a> </li>
-            </ul>
-		</div>
-	</div>
-</div>
-
-
-
-
-
+      </div>
+    </div>
 </body>
 </html>
