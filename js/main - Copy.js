@@ -1,6 +1,3 @@
-var tipoCheckin="0";
-
-
 // JavaScript Document
 $(document).bind("mobileinit", function () {
     $.mobile.allowCrossDomainPages = true;
@@ -9,20 +6,11 @@ $(document).bind("mobileinit", function () {
 });
 
 $(document).ready(function () {
-setUpForms();
+   
 	getAirports("departure");
 	getAirports("destination");
 });
 
-	 
-
-$('#detailVolo').live('pagecreate',function(e,data){
-		 console.log(data);
-		 console.log(data.toiata)
-		 
-   
- });
- 
 $('#home').live('pagecreate', function (event) {
 console.log("LIVE");
  
@@ -48,8 +36,26 @@ console.log("LIVE");
                 console.log(jsonObj.from);
                 console.log(jsonObj.to);
 
+                /*$(xml).find('flightstatus').each(function(){
+				
+				var from = $(this).find('from').text();
+				console.log(from);
+				 $('#jsonpResult').text(from);
+			});*/
             }
         });
+
+        //getDestinationAirportList
+        /* $.ajax({
+            url: ' https://mobile.alitalia.it/services/FlightStatus.aspx?iphoneid=123456&key=44bf025d27eea66336e5c1133c3827f7&carrier=AZ&flightnr=2130&date=2011-06-12Z',
+            //data: {name: 'Chad'},
+            //dataType: 'xml',
+            success: function (data) {
+               console.log(data);
+			   $('#jsonpResult').html(data);
+            }
+        });*/
+
     })
 });
 
@@ -58,56 +64,7 @@ function flyCallback(data) {
     $('#jsonpResult').html(data);
 
 }
-   
-function setUpForms(){
-	   
-	   //Radio Buttons
-   $("input[type='radio']").bind( "change", function(event, ui) {
-	   var tipoCheckin=$(this).val();
-	   var nomeTipo="";
-	   console.log( tipoCheckin);
-	   
-	   switch(tipoCheckin) {
-		   case "0":
-		   //eticket:
-		   nomeTipo="Codice E-Ticket";
-		   break;
-		   
-		   case "1":
-			//MIMMEMIGLIA
-		   nomeTipo="Codice MilleMiglia";
-		   
-		   break;
-		 
-		   case "2":
-			 //PNR
-		   nomeTipo="Codice PNR";
-		   
-		   break;
-		     
-		   
-		   }
-	   
-	   $("input#code").attr("placeholder",nomeTipo);
-	});
- 
- 
- 
- //
- $("form#form_getTickets").bind("submit",function(event){
-	 event.preventDefault();
-	 console.log($(this));
-	 
-	 CheckInGetTickets();
-	 
-	 return false;
-	 
-	 })
- 
 
- 
- }
- 
 
 function getAirports(aereoporto) {
 	
@@ -141,7 +98,7 @@ function getAirports(aereoporto) {
            
 		 
 			//Filla Select 	 
-		   var options = '<option >Aereoporto di Partenza</option>';
+		   var options = '';
             $.each(airs, function (index, data) {
             	//console.log(data.iata)
 				if(index>0){
@@ -157,43 +114,6 @@ function getAirports(aereoporto) {
 
 }
 
-
-function CheckInGetTickets(){
-	//var param:Object={iphoneid: Settings.IPHONE_ID, key: Settings.KEY, lang: Settings.LANG, devicetype: Settings.DEVICETYPE, name: name, surname: surname, codetype:checkinType, code:code,date:theDate};
-				console.log("CheckInGetTickets");
- $.ajax({
-        type: "GET",
-        url: "http://192.168.1.186:8094/services/CheckInGetTickets.aspx",
-        data: {
-            iphoneid: "123456",
-            key: "44bf025d27eea66336e5c1133c3827f7",
-			devicetype: "Mobile",
-			date : getTodayZ(),
-			name: $("input#name").val(),
-			surname: $("input#surname").val(),
-			codetype: tipoCheckin,
-			code: $("input#code").val()
-        },
-        dataType: "xml",
-        success: function (xml) {
-			console.log("SUCCESS");
-			 
-           
-		   if(checkError(xml)==false)
-		   return false;
-		   
-		   var jsonObj = $.xml2json(xml);
-		   console.log(jsonObj);
-		  
-		 
-			
-        }
-    });
-
-}
-
-
-
 /*Check XML Result for STATE == 0 */
 function checkError(xml){
 	 if($(xml).find("state").text()=="0"){
@@ -205,12 +125,6 @@ function checkError(xml){
 	}
 }
 
-
-function getTodayZ(){
-	
-	return "2012-06-04Z";
-	
-	}
 function getObjects(obj, key, val) {
     var objects = [];
     for (var i in obj) {
@@ -224,105 +138,34 @@ function getObjects(obj, key, val) {
     return objects;
 }
 /*NEWS PAGE*/
-$('#infoVoli').live('pagecreate', function (event) {
+$('#news').live('pagecreate', function (event) {
 
-    $('#searchFlight').click(function () {
-      FlightSearch();
+    $('#reset').click(function () {
+        dao.dropTable(function () {
+            dao.createTable();
+        });
     });
 
 
+    $('#sync').click(function () {
+        console.log("SYNC");
+        dao.sync(renderList);
+    });
+
+    $('#render').click(function () {
+        renderList();
+    });
+
+    $('#clearLog').click(function () {
+        console.log("INIT DB");
+
+        dao.initialize(function () {
+            console.log('database initialized');
+        });
+
+        $('#log').val('');
+    });
 });
-
-
- function FlightSearch(){
-	 				console.log("FlightSearch");
-					//var param:Object={iphoneid: Settings.IPHONE_ID, key: Settings.KEY, lang: Settings.LANG, from: from, to: to, date: date};
-				
- $.ajax({
-        type: "GET",
-        url: "https://mobile.alitalia.it/services/FlightSearch.aspx",
-        data: {
-            iphoneid: "123456",
-            key: "44bf025d27eea66336e5c1133c3827f7",
-			devicetype: "Mobile",
-			
-			from: $("select#departure").val(),
-			to: $("select#destination").val(),
-        	date : getTodayZ()
-		},
-        dataType: "xml",
-        success: function (xml) {
-		
-		    if(checkError(xml)==false)
-		   return false;
-		 	
-			console.log("SUCCESS FlightSearch");
-			
-			var resulto = '';
-			
-			
-			 $(xml).find("flight").each(function(index, element) {
-			   // console.log(index);
-			   resulto += '<li data-role="list-divider">Tratta ' + index+ '</li>';
-
-			  
-				$(this).find("subflight").each(function(index, element) {
-					
-					var flight = $.xml2json(element);
-					
-					resulto += '<li><a href="#" data-carrier="'+flight.carrier+'" data-number="'+flight.number+'">' + flight.from + ' - ' + flight.to +'</a></li>';
-				   // console.log(element);
-				 });
-			});
-			
-			
-		
-			//console.log(resulto);
-			$("ul#FlyResult").html(resulto).listview('refresh');
-			
-			
-			$("ul#FlyResult li a").live("click",function(){
-				
-				//alert($(this).data("carrier")+" - "+$(this).data("number"));
-				FlightStatus($(this).data("carrier"),$(this).data("number"));
-				})
-        }
-    });
-}
- 
- function FlightStatus(carrier,number){
-	 //* https://mobile.alitalia.it/services/FlightStatus.aspx?iphoneid=123456&key=44bf025d27eea66336e5c1133c3827f7&carrier=AZ&flightnr=2130&date=2011-06-12Z
-	  $.mobile.showPageLoadingMsg("FlightStatus...");
-	 console.log("FlightStatus");
-	 $.ajax({
-        type: "GET",
-        url: "https://mobile.alitalia.it/services/FlightStatus.aspx",
-        data: {
-            iphoneid: "123456",
-            key: "44bf025d27eea66336e5c1133c3827f7",
-			
-			carrier: carrier,
-			flightnr: number,
-        	date : getTodayZ()
-		},
-        dataType: "xml",
-        success: function (xml) {
-		  
-		  if(checkError(xml)==false)
-		   return false;
-		
-		 var flight=$.xml2json(xml);
-			//console.log(flight.toiata);   
-			
-		   $.mobile.changePage( "#detailVolo", { data:flight} );
-		   //$("#detailVolo #flightDetail").html(flight.toiata);
-			}
-	 })
-			 
-	 }
-	 
-
-
 
 /*STORES PAGE*/
 $('#stores').live('pagecreate', function (event) {
