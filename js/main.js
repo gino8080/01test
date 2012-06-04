@@ -14,15 +14,6 @@ setUpForms();
 	getAirports("destination");
 });
 
-	 
-
-$('#detailVolo').live('pagecreate',function(e,data){
-		 console.log(data);
-		 console.log(data.toiata)
-		 
-   
- });
- 
 $('#home').live('pagecreate', function (event) {
 console.log("LIVE");
  
@@ -139,10 +130,15 @@ function getAirports(aereoporto) {
 		   var jsonObj = $.xml2json(xml);
 		   var airs = getObjects(jsonObj, 'iata')
            
-		 
+		    var options = "";
+		 if(aereoporto=="departure"){
+			 options += '<option >Aereoporto di Partenza</option>';
+			 }else{
+				 options += '<option >Aereoporto di Arrivo</option>';
+				 }
+				 
 			//Filla Select 	 
-		   var options = '<option >Aereoporto di Partenza</option>';
-            $.each(airs, function (index, data) {
+		           $.each(airs, function (index, data) {
             	//console.log(data.iata)
 				if(index>0){
 					options += '<option value="' + data.iata + '">' + data.displayname + '</option>';
@@ -293,6 +289,7 @@ $('#infoVoli').live('pagecreate', function (event) {
  function FlightStatus(carrier,number){
 	 //* https://mobile.alitalia.it/services/FlightStatus.aspx?iphoneid=123456&key=44bf025d27eea66336e5c1133c3827f7&carrier=AZ&flightnr=2130&date=2011-06-12Z
 	  $.mobile.showPageLoadingMsg("FlightStatus...");
+	  
 	 console.log("FlightStatus");
 	 $.ajax({
         type: "GET",
@@ -311,10 +308,26 @@ $('#infoVoli').live('pagecreate', function (event) {
 		  if(checkError(xml)==false)
 		   return false;
 		
+		
+		
+		
 		 var flight=$.xml2json(xml);
-			//console.log(flight.toiata);   
+			console.log(flight.toiata);   
 			
-		   $.mobile.changePage( "#detailVolo", { data:flight} );
+			var cont="";
+			cont+=flight.dateof +"<br/>";
+			cont+=flight.fcarrier+flight.fnumber +"<br/><br/>";
+			cont+=flight.fromiata+" "+flight.from +"<br/>";
+			cont+=flight.expectedboardingtime+"<br/><br/>";
+			cont+=flight.toiata+" "+flight.to +"<br/>";
+			cont+=flight.expectedlandingtime+"<br/>";
+			
+		   //$.mobile.changePage( $("#detailVolo"), { data:{iata:"io",toiata:"me" }} );
+		  $("#detailVolo #flightDetail").html(cont)
+		  
+		  
+		   $.mobile.changePage($("#detailVolo"), {transition: 'pop', role: 'dialog'});   
+		   
 		   //$("#detailVolo #flightDetail").html(flight.toiata);
 			}
 	 })
@@ -322,6 +335,11 @@ $('#infoVoli').live('pagecreate', function (event) {
 	 }
 	 
 
+$('#detailVolo').live('pagebeforeshow',function(e,data){
+		console.log(data.toiata);
+		 $("#detailVolo #flightDetail").text(data.toiata);
+   
+ });
 
 
 /*STORES PAGE*/

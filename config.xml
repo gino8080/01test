@@ -4,7 +4,7 @@
     id        = "com.phonegap.example"
     version   = "1.0.0">
 
-<name>PhoneGap Build Application</name>
+<name>Alitalia Test</name>
 
 <description>
 A simple PhoneGap Build application.
@@ -14,4 +14,8 @@ A simple PhoneGap Build application.
 Your Name
 </author>
 
+ <icon src="gfx/ios/apple-touch-icon.png" width="57" height="57"/>
+    <icon src="gfx/ios/touch-icon-ipad.png" width="72" height="72"/>
+    <icon src="gfx/ios/touch-icon-iphone4.png" width="114" height="114"/>  
+	
 </widget>

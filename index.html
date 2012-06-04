@@ -29,6 +29,7 @@
 </head>
 
 <body>
+
 <div data-role="page" id="home">
   <div data-theme="a" data-role="header" data-position="fixed">
     <h3> HOME </h3>
@@ -64,11 +65,9 @@
         <label for="surname">Cognome:</label>
         <input type="text" name="surname" id="surname" placeholder="Cognome" value="Negrin"  required />
       </div>
-      <button id="airports" onclick="getAirports();">Airports</button>
-      <button id="fly" >FLY</button>
-      <button onclick="openWin();">Open Win</button>
-      <div id="header"></div>
-      <button data-icon="forward" type="submit" value="submit-value" name="submit">Cerca</button>
+   
+     
+      <button data-icon="forward" type="submit" value="submit-value" name="submit">Cerca Voli</button>
     </form>
   </div>
   <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
@@ -76,69 +75,71 @@
       <ul>
         <li> <a href="#home" data-theme="" data-icon="home" class="ui-btn-active ui-state-persist" > HOME </a> </li>
         <li> <a href="#infoVoli" data-theme="" data-icon="check"  > INFO VOLI </a> </li>
-           <li> <a href="#detailVolo" data-theme="" data-icon="check"  > detailVolo </a> </li>
+
       </ul>
     </div>
   </div>
 </div>
+
+
 <div data-role="page" id="infoVoli">
+ 
   <div data-theme="a" data-role="header" data-position="fixed">
     <h3> INFO VOLI </h3>
   </div>
+  
   <div data-role="content">
-    <div class="ui-grid-a">
-      <div class="ui-block-a">
-        <div data-role="fieldcontain" class="ui-hide-label">
+  
+        <div data-role="fieldcontain" >
           <label for="departure" class="select">Partenza:</label>
           <select name="departure" id="departure">
             <option >Aereoporto di Partenza</option>
           </select>
         </div>
-      </div>
-      <div class="ui-block-b">
-        <div data-role="fieldcontain" class="ui-hide-label">
+    
+        <div data-role="fieldcontain" >
           <label for="destination" class="select">Arrivo:</label>
           <select name="destination" id="destination">
             <option >Aereporto d'Arrivo</option>
           </select>
         </div>
-      </div>
-    </div>
+
     <button data-icon="search" id="searchFlight">Cerca Voli</button>
     <ul id="FlyResult" data-role="listview" data-inset="true" data-split-icon="arrow-r">
-      <li><a href="#">Page</a><a href="#">Default</a></li>
+   
     </ul>
+    
   </div>
+  
   <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
     <div data-role="navbar" data-iconpos="top">
       <ul>
         <li> <a href="#home" data-theme="" data-icon="home"  > HOME </a> </li>
         <li> <a href="#infoVoli" data-theme="" data-icon="check"class="ui-btn-active ui-state-persist" > INFO VOLI </a> </li>
-     <li> <a href="#detailVolo" data-theme="" data-icon="check"  > detailVolo </a> </li>
+
       </ul>
     </div>
   </div>
+  
 </div>
 
 
 
-<div data-role="page" id="detailVolo">
+<div data-role="dialog" id="detailVolo">
 
-  <div data-theme="a" data-role="header" data-position="fixed" data-add-back-btn="true">
+  <div data-theme="a" data-role="header"   >
+  
     <h3> Dettaglio Volo </h3>
+    
   </div>
   
-  <div data-role="content" id="detail"> </div>
+  <div data-role="content" id="flightDetail">
   
-   <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
-    <div data-role="navbar" data-iconpos="top">
-      <ul>
-        <li> <a href="#home" data-theme="" data-icon="home"  > HOME </a> </li>
-        <li> <a href="#infoVoli" data-theme="" data-icon="check" > INFO VOLI </a> </li>
-     <li> <a href="#detailVolo" data-theme="" data-icon="check" class="ui-btn-active ui-state-persist" > detailVolo </a> </li>
-      </ul>
-    </div>
+  	
+  
   </div>
+  
+  
   
 </div>
 
