@@ -19,6 +19,8 @@
 <script src="js/xml2json.js"></script>
 <script src="js/mustaches.js"></script>
 
+
+
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -30,7 +32,6 @@
 </head>
 
 <body>
-
 <div data-role="page" id="home">
   <div data-theme="a" data-role="header" data-position="fixed">
     <h3> HOME </h3>
@@ -57,7 +58,7 @@
         </fieldset>
         <div data-role="fieldcontain" class="ui-hide-label">
           <label for="code">codice:</label>
-          <input type="text" name="code" id="code" placeholder="codice" value="0552188465254"  required />
+          <input type="text" name="code" id="code" placeholder="codice" value="0552188465308"  required />
         </div>
       </div>
       <div data-role="fieldcontain" class="ui-hide-label">
@@ -66,112 +67,82 @@
         <label for="surname">Cognome:</label>
         <input type="text" name="surname" id="surname" placeholder="Cognome" value="Negrin"  required />
       </div>
-   
-     
       <button data-icon="forward" type="submit" value="submit-value" name="submit">Cerca Voli</button>
     </form>
-    
-    <ul id="CheckinResult" data-role="listview" data-inset="true" data-split-icon="arrow-r">  </ul>
-    
-    <div id="selectedTicket">
-    
-    <div id="tpl-ticket" >
-    <dl>
-        <dt>Name</dt>
-        <dd>{{ticket.eticketnumber}}</dd>
-        <dt>Time</dt>
+    <ul id="CheckinResult" data-role="listview" data-inset="true" data-split-icon="arrow-r">
+    </ul>
+    <img id="boardImg"  />
+    <div id="selectedTicket"></div>
+    <div id="tpl-ticket"  >
+      <dl>
+        <dt>{{eticketnumber}}</dt>
+        <dd>{{ticket.seat}} </dd>
+        <dt>{{ticket.class}}</dt>
         <dd>{{sessionid}}</dd>
-    </dl>
+      </dl>
     </div>
-    <div data-role="fieldcontain">
-      <label for="email">Email</label>
-      <input type="email" name="email" id="email" value="" placeholder="Indirizzo Email"  required />
-    </div>
-     <div data-role="fieldcontain">
-      <label for="telephone">telephone</label>
-      <input type="tel" name="telephone" id="telephone" value="" placeholder="Numero di Telefono" required />
-    </div>
-<button data-icon="forward" name="doCheckingBtn" id="doCheckingBtn">Checkin</button>
-    
-</div>
-
-
-  </div>
-  <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
-    <div data-role="navbar" data-iconpos="top">
-      <ul>
-        <li> <a href="#home" data-theme="" data-icon="home" class="ui-btn-active ui-state-persist" > HOME </a> </li>
-        <li> <a href="#infoVoli" data-theme="" data-icon="check"  > INFO VOLI </a> </li>
-
-      </ul>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-<div data-role="page" id="infoVoli">
+    <button id="btn_CheckInGetSeatMap" data-icon="grid" name="btn_CheckInGetSeatMap">GetSeatMap</button>
+     <button data-icon="arrow-d" name="btn_CheckInGetBoardingPass" id="btn_CheckInGetBoardingPass">GetBoarding Pass</button>
  
+  <button data-icon="star" name="btn_getBoard" id="btn_getBoard" onClick="getBoard()">Load Board</button>
+ 
+ 
+    <form id="form_DoCheckIn">
+    
+      <div data-role="fieldcontain">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" value="m.cannizzaro@01tribe.com" placeholder="Indirizzo Email"  required />
+      </div>
+      <div data-role="fieldcontain">
+        <label for="telephone">telephone</label>
+        <input type="tel" name="telephone" id="telephone" value="3479460360" placeholder="Numero di Telefono" required />
+      </div>
+      <button data-icon="forward" name="doCheckingBtn" id="doCheckingBtn">Checkin</button>
+    </form>
+  </div>
+</div>
+<div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
+  <div data-role="navbar" data-iconpos="top">
+    <ul>
+      <li> <a href="#home" data-theme="" data-icon="home" class="ui-btn-active ui-state-persist" > HOME </a> </li>
+      <li> <a href="#infoVoli" data-theme="" data-icon="check"  > INFO VOLI </a> </li>
+    </ul>
+  </div>
+</div>
+</div>
+<div data-role="page" id="infoVoli">
   <div data-theme="a" data-role="header" data-position="fixed">
     <h3> INFO VOLI </h3>
   </div>
-  
   <div data-role="content">
-  
-        <div data-role="fieldcontain" >
-          <label for="departure" class="select">Partenza:</label>
-          <select name="departure" id="departure">
-            <option >Aereoporto di Partenza</option>
-          </select>
-        </div>
-    
-        <div data-role="fieldcontain" >
-          <label for="destination" class="select">Arrivo:</label>
-          <select name="destination" id="destination">
-            <option >Aereporto d'Arrivo</option>
-          </select>
-        </div>
-
+    <div data-role="fieldcontain" >
+      <label for="departure" class="select">Partenza:</label>
+      <select name="departure" id="departure">
+        <option >Aereoporto di Partenza</option>
+      </select>
+    </div>
+    <div data-role="fieldcontain" >
+      <label for="destination" class="select">Arrivo:</label>
+      <select name="destination" id="destination">
+        <option >Aereporto d'Arrivo</option>
+      </select>
+    </div>
     <button data-icon="search" id="searchFlight">Cerca Voli</button>
-   
   </div>
-  
   <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
     <div data-role="navbar" data-iconpos="top">
       <ul>
         <li> <a href="#home" data-theme="" data-icon="home"  > HOME </a> </li>
         <li> <a href="#infoVoli" data-theme="" data-icon="check"class="ui-btn-active ui-state-persist" > INFO VOLI </a> </li>
-
       </ul>
     </div>
   </div>
-  
 </div>
-
-
-
 <div data-role="dialog" id="detailVolo">
-
   <div data-theme="a" data-role="header"   >
-  
     <h3> Dettaglio Volo </h3>
-    
   </div>
-  
-  <div data-role="content" id="flightDetail">
-  
-  	
-  
-  </div>
-  
-  
-  
+  <div data-role="content" id="flightDetail"> </div>
 </div>
-
 </body>
 </html>

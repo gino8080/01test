@@ -51,12 +51,19 @@ $('#infoVoli').live('pagecreate', function (event) {
  getAirports("departure");
  getAirports("destination");
 });
-
+function getBoard(){
+	
+	  var im = window.localStorage.getItem("boardpass");
+	  
+   $("#boardImg").attr("src","data:image/gif;base64,"+im);
+	}
 
 $('#home').live('pagecreate', function (event) {
-    console.log("LIVE");
-   
-
+    console.log("HOME");
+	
+	
+  
+/*
     $("#fly").click(function () {
         console.log("fly");
 
@@ -80,8 +87,11 @@ $('#home').live('pagecreate', function (event) {
 
             }
         });
-    })
+    })*/
 });
+
+
+
 
 function flyCallback(data) {
     console.log(data);
@@ -132,6 +142,28 @@ function setUpForms() {
         return false;
 
     })
+	
+	  $("form#form_DoCheckIn").bind("submit", function (event) {
+        event.preventDefault();
+        //console.log($(this));
+       CheckinDoCheckIn(CheckInUser.sessionid,$("#telephone").val(),$("#email").val());
+
+        return false;
+
+    })
+	
+	
+	$("#btn_CheckInGetSeatMap").bind("click",function (event) {
+		console.log("click CheckInGetSeatMap");
+		CheckInGetSeatMap();
+		
+		});
+
+
+$("#btn_CheckInGetBoardingPass").bind("click",function (event) {
+		CheckInGetBoardingPass();
+		
+		});
 
 
 
@@ -299,6 +331,9 @@ function FlightStatus(carrier, number) {
 
 function CheckInGetTickets() {
 
+	CheckInUser.nome=$("input#name").val();
+	CheckInUser.cognome=$("input#surname").val();
+
     //var param:Object={iphoneid: Settings.IPHONE_ID, key: Settings.KEY, lang: Settings.LANG, devicetype: Settings.DEVICETYPE, name: name, surname: surname, codetype:checkinType, code:code,date:theDate};
     console.log("CheckInGetTickets");
     $.ajax({
@@ -309,8 +344,8 @@ function CheckInGetTickets() {
             key: "44bf025d27eea66336e5c1133c3827f7",
             //devicetype: "Mobile",
             date: getTodayZ(),
-            name: $("input#name").val(),
-            surname: $("input#surname").val(),
+            name: CheckInUser.nome,
+            surname: CheckInUser.cognome,
             codetype: tipoCheckin,
             code: $("input#code").val()
         },
@@ -369,9 +404,7 @@ function CheckInGetTickets() {
 function CheckInSelectTicket(sessionid, eticketnumber, couponnumber) {
     //* https://mobile.alitalia.it/services/FlightStatus.aspx?iphoneid=123456&key=44bf025d27eea66336e5c1133c3827f7&carrier=AZ&flightnr=2130&date=2011-06-12Z
     $.mobile.showPageLoadingMsg("CheckInSelectTicket...");
-
-    console.log("CheckInSelectTicket = "+sessionid +" - " + eticketnumber.toString()+" - " + parseInt(couponnumber));
-	console.log("ETicket="+eticketnumber+":"+typeof(eticketnumber));
+	console.log("CheckInSelectTicket = "+sessionid +" - " + eticketnumber.toString()+" - " + parseInt(couponnumber));
 				
     $.ajax({
         type: "GET",
@@ -390,23 +423,17 @@ function CheckInSelectTicket(sessionid, eticketnumber, couponnumber) {
             if (checkError(xml) == false) return false;
 			
 			 var selectticket = $.xml2json(xml);
-			
-			 console.log(selectticket);
 			 
-			 CheckInUser.ticket.eticketnumber=eticketnumber;
-			 CheckInUser.ticket.couponnumber=parseInt(couponnumber);
-						
-			  var template = $('#tpl-ticket').html();
+			  CheckInUser.ticket=selectticket
+			  CheckInUser.ticket.couponnumber=parseInt(couponnumber);
+			
+			 var template = $('#tpl-ticket').html();
+			 $('#tpl-ticket').hide();
 			 var  html = Mustache.to_html(template, CheckInUser);
 			$('#selectedTicket').html(html);
 			   
 			   $.mobile.hidePageLoadingMsg();
-$("#doCheckingBtn").bind("click",function(){
-	
-	
-	CheckinDoCheckIn(CheckInUser.sessionid,$("#email").val(),$("#telephone").val());
-	})
-
+//CheckInGetSeatMap()
         }
 
     })
@@ -421,9 +448,9 @@ function CheckinDoCheckIn(sessionid, phonenumber, email) {
     $.mobile.showPageLoadingMsg("CheckinDoCheckIn...");
 
     console.log("CheckinDoCheckIn = "+sessionid +" - " + phonenumber +" - " + email);
-				console.log(typeof(phonenumber));
+	console.log(typeof(phonenumber));
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: path+"CheckinDoCheckIn.aspx",
         data: {
             iphoneid: "123456",
@@ -439,12 +466,77 @@ function CheckinDoCheckIn(sessionid, phonenumber, email) {
 			
 			 var checkin = $.xml2json(xml);
 			
-			 console.log(checkin.seatcode);
+			 console.log(checkin);
 			 
 			
 		}
 	})
 }
+
+
+function CheckInGetBoardingPass() {
+    //* https://mobile.alitalia.it/services/FlightStatus.aspx?iphoneid=123456&key=44bf025d27eea66336e5c1133c3827f7&carrier=AZ&flightnr=2130&date=2011-06-12Z
+
+	console.log("CheckInGetBoardingPass");
+      $.ajax({
+        type: "GET",
+        url: path+"CheckInGetBoardingPass.aspx",
+        data: {
+            iphoneid: "123456",
+            key: "44bf025d27eea66336e5c1133c3827f7",
+		 	sessionid: CheckInUser.sessionid
+        },
+        dataType: "xml",
+        success: function (xml) {
+			
+			  if (checkError(xml) == false) return false;
+			
+			 var boardPass = $.xml2json(xml);
+			
+			 console.log(boardPass);
+			// console.log(xml.find("image").text())
+			
+			 var im=boardPass.image;
+			  $("#boardImg").attr("src","data:image/gif;base64,"+im);
+			  
+			  
+			  window.localStorage.setItem("boardpass", im);
+			
+		}
+	})
+}
+
+
+
+
+function CheckInGetSeatMap() {
+    //* https://mobile.alitalia.it/services/FlightStatus.aspx?iphoneid=123456&key=44bf025d27eea66336e5c1133c3827f7&carrier=AZ&flightnr=2130&date=2011-06-12Z
+
+	console.log("CheckInGetSeatMap");
+      $.ajax({
+        type: "GET",
+        url: path+"CheckInGetSeatMap.aspx",
+        data: {
+            iphoneid: "123456",
+            key: "44bf025d27eea66336e5c1133c3827f7",
+		 	sessionid: CheckInUser.sessionid
+        },
+        dataType: "xml",
+        success: function (xml) {
+			
+			  if (checkError(xml) == false) return false;
+			
+			 var getseatmap = $.xml2json(xml);
+			
+			 console.log(getseatmap);
+			
+			
+		}
+	})
+}
+
+
+
 
 
 $('#detailVolo').live('pagebeforeshow', function (e, data) {
