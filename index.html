@@ -3,7 +3,7 @@
 <head>
 <title></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
-<meta charset="utf-8">
+<meta charset="utf-8" />
 
 <!-- iPad/iPhone specific css below, add after your main css >
 	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
@@ -17,6 +17,7 @@
 <script src="js/main.js"></script>
 <script src="js/jquery.mobile-1.1.0.min.js"></script>
 <script src="js/xml2json.js"></script>
+<script src="js/mustaches.js"></script>
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -41,22 +42,22 @@
           <div role="heading" class="ui-controlgroup-label ">Biglietto Elettronico:</div>
           <div class="ui-controlgroup-controls">
             <div class="ui-radio">
-              <input type="radio" name="codetype" id="radio-choice-c" value="2" checked="checked">
+              <input type="radio" name="codetype" id="radio-choice-c" value="3" checked="checked">
               <label for="radio-choice-c" data-corners="true" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-corner-left ui-radio-off ui-btn-up-c"><span class="ui-btn-inner ui-corner-left"><span class="ui-btn-text">PNR</span></span></label>
             </div>
             <div class="ui-radio">
-              <input type="radio" name="codetype" id="radio-choice-d" value="0">
+              <input type="radio" name="codetype" id="radio-choice-d" value="1">
               <label for="radio-choice-d" data-corners="true" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-radio-on ui-btn-active ui-btn-up-c"><span class="ui-btn-inner"><span class="ui-btn-text">E-Ticket</span></span></label>
             </div>
             <div class="ui-radio">
-              <input type="radio" name="codetype" id="radio-choice-e" value="1">
+              <input type="radio" name="codetype" id="radio-choice-e" value="2">
               <label for="radio-choice-e" data-corners="true" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-btn-up-c ui-radio-off ui-corner-right ui-controlgroup-last"><span class="ui-btn-inner ui-corner-right ui-controlgroup-last"><span class="ui-btn-text">MilleMiglia</span></span></label>
             </div>
           </div>
         </fieldset>
         <div data-role="fieldcontain" class="ui-hide-label">
           <label for="code">codice:</label>
-          <input type="text" name="code" id="code" placeholder="codice" value="0552188465022"  required />
+          <input type="text" name="code" id="code" placeholder="codice" value="0552188465254"  required />
         </div>
       </div>
       <div data-role="fieldcontain" class="ui-hide-label">
@@ -69,6 +70,32 @@
      
       <button data-icon="forward" type="submit" value="submit-value" name="submit">Cerca Voli</button>
     </form>
+    
+    <ul id="CheckinResult" data-role="listview" data-inset="true" data-split-icon="arrow-r">  </ul>
+    
+    <div id="selectedTicket">
+    
+    <div id="tpl-ticket" >
+    <dl>
+        <dt>Name</dt>
+        <dd>{{ticket.eticketnumber}}</dd>
+        <dt>Time</dt>
+        <dd>{{sessionid}}</dd>
+    </dl>
+    </div>
+    <div data-role="fieldcontain">
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" value="" placeholder="Indirizzo Email"  required />
+    </div>
+     <div data-role="fieldcontain">
+      <label for="telephone">telephone</label>
+      <input type="tel" name="telephone" id="telephone" value="" placeholder="Numero di Telefono" required />
+    </div>
+<button data-icon="forward" name="doCheckingBtn" id="doCheckingBtn">Checkin</button>
+    
+</div>
+
+
   </div>
   <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
     <div data-role="navbar" data-iconpos="top">
@@ -80,6 +107,12 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+
 
 
 <div data-role="page" id="infoVoli">
@@ -105,10 +138,7 @@
         </div>
 
     <button data-icon="search" id="searchFlight">Cerca Voli</button>
-    <ul id="FlyResult" data-role="listview" data-inset="true" data-split-icon="arrow-r">
    
-    </ul>
-    
   </div>
   
   <div data-theme="a" data-role="footer" data-position="fixed" data-id="commonFooter">
