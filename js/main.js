@@ -45,6 +45,14 @@ $(document).bind("mobileinit", function () {
 });
 
 $(document).ready(function () {
+	$.support.cors = true;
+	
+	$.ajaxSetup({
+  		complete: function(){
+			hideLoading();
+			}
+	});
+
     setUpForms();
    // getAirports("departure");
     //getAirports("destination");
@@ -55,8 +63,8 @@ function showLoading(text){
 	if(text==null){
 		text="Loading..";
 	}
-	
-		$.mobile.showPageLoadingMsg("a", text,true);
+	$.mobile.showPageLoadingMsg("d", "Loading theme a...");
+		//$.mobile.showPageLoadingMsg("a", text);
 
 	}
 	
@@ -161,6 +169,10 @@ function setUpForms() {
         }
 
         $("input#code").attr("placeholder", nomeTipo);
+		
+		if(window.localStorage.getItem("boardpass").length<=0){
+			$("#btn_getBoard").hide();
+			};
     });
 
 
@@ -256,7 +268,7 @@ hideLoading();
 
 
 function FlightSearch() {
-	
+	console.log($("#dataVoli").val())
     console.log("FlightSearch");
     //var param:Object={iphoneid: Settings.IPHONE_ID, key: Settings.KEY, lang: Settings.LANG, from: from, to: to, date: date};
     $.ajax({
@@ -387,7 +399,7 @@ function CheckInGetTickets() {
         dataType: "xml",
         success: function (xml) {
             console.log("SUCCESS");
-
+			
 
             if (checkError(xml) == false) return false;
 
@@ -413,7 +425,7 @@ function CheckInGetTickets() {
                 
                    /* console.log("fly =");
                     console.log(fly);*/
-                    checkRes += '<li ><a href="#" data-couponnumber="'+fly.CouponNumber+'" data-pnr="'+Pax.PNR+'" eticket="'+ticket+'">' + fly.FlyCarrier + " - " + fly.FlyNumber + '</a></li>';
+                    checkRes += '<li ><a href="#" data-couponnumber="'+fly.CouponNumber+'" data-pnr="'+Pax.PNR+'" data-flycarrier="'+fly.FlyCarrier+'-'+fly.FlyNumber+'" data-landingairport="'+fly.landingairport+'" data-boardingairport="'+fly.boardingairport+'" eticket="'+ticket+'">' + fly.FlyCarrier + " - " + fly.FlyNumber + '</a></li>';
 					console.log(checkRes);
 
                 });
@@ -431,6 +443,9 @@ function CheckInGetTickets() {
             $("ul#CheckinResult a",$("#CheckinList")).bind("click", function () {
 				CheckInUser.eticket=$(this).attr("eticket").toString();
 				CheckInUser.ticket.couponnumber=$(this).data("couponnumber");
+				CheckInUser.ticket.boardingairport = $(this).data("boardingairport");
+				CheckInUser.ticket.landingairport = $(this).data("landingairport");
+				CheckInUser.ticket.flycarrier = $(this).data("flycarrier");
 				CheckInSelectTicket(CheckInUser.sessionid, CheckInUser.eticket ,CheckInUser.ticket.couponnumber);
 				
             })
@@ -605,17 +620,41 @@ $('#stores').live('pagecreate', function (event) {
 });
 
 
-function loadJsonP() {
-    console.log("JSONP");
+$('#offerte').live('pagecreate', function (event) {
+	loadOfferte();
+	 var templateOfferte = $('#tpl-offerte').html();
+	
+	 $('#list_offerte li').live("click",function(e){
+	
+		 var url=$(this).data("url");
+		 console.log(url);
+		 
+		  $.getJSON(url+"&json=1", function (data) {
+			  console.log(data.post);
+			
+				$('#tpl-offerte').hide();
+				var  html = Mustache.to_html(templateOfferte, data.post);
+				
+				$('#offerteContent').html(html);
+				 
+					 $.mobile.changePage($("#offerteDetail"), {	transition: 'slide'	});
+			});
+			
+		
+		 })
+		 
+})
 
+
+function loadOfferte() {
+    console.log("JSONP");
+	showLoading("Caricando Ultime Offerte..");
     $.ajax({
-        url: 'http://beta.01tribe.com/responsive/wordpress/api/get_recent_posts/ ',
+        url: 'http://beta.01tribe.com/alitalia_panel/feed-offerte-alitalia/',
         //data: {name: 'Chad'},
-        dataType: 'jsonp',
-        jsonp: 'callback',
-        jsonpCallback: 'jsonpCallback',
+        dataType: 'json',
         success: function (data) {
-            fillGallery(data);
+            fillOfferte(data);
         }
     });
 }
@@ -633,19 +672,22 @@ function jsonpCallback(data) {
     $('#jsonpResult').text(data.message);
 }
 
-function fillGallery(data) {
+function fillOfferte(data) {
 
-    console.log("FILLGALLERY");
-    $(data.posts).each(function (index, element) {
-        console.log(data.posts[index].attachments[0].url);
-        $('#Gallery').append('<li><a href="' + data.posts[index].attachments[0].url + '" data-ajax="false"><img src="' + data.posts[index].attachments[0].url + '" title="' + data.posts[index].url + '" /></a></li>');
-        $('#result').append('<a href="' + data.posts[index].url + '"><div id="homeblog">' + data.posts[index].attachments[0].url + '</div><img src="' + data.posts[index].attachments[0].url + '" width="150" /></a>');
+    console.log("fillOfferte");
+	$('#list_offerte').html("");
+	console.log(data);
+    $(data).each(function (index, offerta) {
+        //console.log(offerta);
+       // $('#Gallery').append('<li><a href="' + data.posts[index].attachments[0].url + '" data-ajax="false"><img src="' + data.posts[index].attachments[0].url + '" title="' + data.posts[index].url + '" /></a></li>');
+        $('#list_offerte').append('<li  data-icon="info"  data-split-theme="a" data-split-icon="info" data-url='+offerta.url+' ><div><img src="'+offerta.thumb_url+'" class="ui-li-thumb ui-corner-tl" style="max-width:100%;height:auto" /><div style="padding-left:80px;"><h3 class="ui-li-heading">' + offerta.title +'</h3><p class="ui-li-desc">'+offerta.price+'</p></div></div></li>');
 
     });
 
-    var options = {};
-    $("#Gallery a").photoSwipe(options);
-
+ 	$('#list_offerte').listview('refresh');
+	
+	
+			
 }
 
 
@@ -721,7 +763,7 @@ function showError(text){
 				role: 'dialog'
             });
 			
-		$("#logMsg").append(text);
+		$("#logMsg").html(text);
 		
 		
 	
@@ -730,7 +772,7 @@ function showError(text){
 
 function getTodayZ() {
 
-    return "2012-06-04Z";
+    return "2012-06-26Z";
 
 }
 

@@ -9,8 +9,8 @@
 	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
 	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />		
 	-->
-<!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here 
-<script type="text/javascript" charset="utf-8" src="cordova-1.7.0.js"></script>-->
+<!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here
+<script type="text/javascript" charset="utf-8" src="cordova-1.7.0.js"></script> -->
 <script type="text/javascript" src="js/ChildBrowser.js"></script>
 <link rel="stylesheet" href="css/jquery.mobile.1.1.0.min.css" />
 <link rel="stylesheet" href="css/themes/Alitalia.min.css" />
@@ -31,14 +31,14 @@
 </head>
 <body>
 <div data-role="page" id="home">
-  <div data-theme="a" data-role="header"> <a data-icon="star" data-iconpos="right" name="btn_getBoard" id="btn_getBoard" onClick="loadBoardingPass()">Load Board</a>
+  <div data-theme="a" data-role="header"> <a data-icon="star" data-iconpos="right" name="btn_getBoard" id="btn_getBoard" onClick="loadBoardingPass()" class="ui-btn-right">Boarding Pass</a>
     <h3>HOME</h3>
   </div>
   <div data-role="content">
     <form id="form_getTickets" action="https://mobile.alitalia.it/services/CheckInGetTickets.aspx"  method="get">
       <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br ">
         <fieldset data-role="controlgroup" data-type="horizontal" class="ui-corner-all ui-controlgroup ui-controlgroup-horizontal ">
-          <div role="heading" class="ui-controlgroup-label ">Biglietto Elettronico:</div>
+          <div role="heading" class="ui-controlgroup-label "></div>
           <div class="ui-controlgroup-controls">
             <div class="ui-radio">
               <input type="radio" name="codetype" id="radio-choice-c" value="3" checked="checked">
@@ -60,28 +60,27 @@
         <div data-role="fieldcontain" class="ui-hide-label">
           <label for="code">codice:</label>
           <input type="text" name="code" id="code" placeholder="codice"
-                        value="0552188465308" required />
+                        value="0552189688155" required />
         </div>
      
         <label for="name">Nome:</label>
         <input type="text" name="name" id="name" placeholder="Nome"
-                    value="Giancarlo" required />
+                    value="pippo" required />
         <label for="surname">Cognome:</label>
         <input type="text" name="surname" id="surname" placeholder="Cognome"
-                    value="Negrin" required />
+                    value="pippa" required />
       </div>
       <button data-icon="forward" type="submit" value="submit-value" name="submit">Cerca Voli</button>
     </form>
   </div>
-  <div data-role="footer">
-   
-    <div data-role="navbar" data-iconpos="top">
+  <div  data-role="navbar" data-iconpos="top" data-position="fixed">
       <ul>
         <li> <a href="#home" data-theme="" data-icon="home" class="ui-btn-active ui-state-persist" > CHEKIN </a> </li>
-        <li> <a href="#infoVoli" data-theme="" data-icon="check"  > VOLI </a> </li>
+      <!--  <li> <a href="#infoVoli" data-theme="" data-icon="check"  > VOLI </a> </li>-->
+      <li> <a href="#offerte" data-theme="" data-icon="check"  > OFFERTE </a> </li>
       </ul>
-    </div>
   </div>
+  
 </div>
 <div data-role="page" id="CheckinList" data-add-back-btn="true">
   <div data-theme="a" data-role="header" >
@@ -101,12 +100,11 @@
     </ul>
     <div id="selectedTicket"></div>
     <div id="tpl-ticket">
-      <dl>
-        <dt>{{eticketnumber}}</dt>
-        <dd>{{ticket.seat}}</dd>
-        <dt>{{ticket.class}}</dt>
-        <dd>{{sessionid}}</dd>
-      </dl>
+   		<h1>{{ticket.flycarrier}}</h1>
+     	<div>{{ticket.boardingairport}}</div>
+        <div>{{ticket.landingairport}}</div>
+        <div>Posto: {{ticket.seat}}</div>
+        <div>Classe: {{ticket.class}}</div>
     </div>
     <button id="btn_CheckInGetSeatMap" data-icon="grid" name="btn_CheckInGetSeatMap">GetSeatMap</button>
     <button data-icon="arrow-d" name="btn_CheckInGetBoardingPass" id="btn_CheckInGetBoardingPass">GetBoarding Pass</button>
@@ -134,27 +132,28 @@
   </div>
   <div data-role="content">
     <div data-role="fieldcontain">
-      <label for="departure" class="select">Partenza:</label>
-      <select name="departure" id="departure">
+      <label for="departure" class="select" >Partenza:</label>
+      <select name="departure" id="departure" required>
         <option>Aereoporto di Partenza</option>
       </select>
-    </div>
-    <div data-role="fieldcontain">
+   
       <label for="destination" class="select">Arrivo:</label>
-      <select name="destination" id="destination">
+      <select name="destination" id="destination" required>
         <option>Aereporto d'Arrivo</option>
       </select>
+    
+       <br>
+	<label for="date" class="select" id="dataVoli" required>Data:</label>
+     <input type="date" name="date" value="" />
     </div>
     <button data-icon="search" id="searchFlight">Cerca Voli</button>
   </div>
-  <div data-role="footer">
-   
-    <div data-role="navbar" data-iconpos="top">
+  <div  data-role="navbar" data-iconpos="top" data-position="fixed">
       <ul>
-        <li> <a href="#home" data-theme="" data-icon="home"  > CHEKIN </a> </li>
-        <li> <a href="#infoVoli" data-theme="" data-icon="check" class="ui-btn-active ui-state-persist" > VOLI </a> </li>
+        <li> <a href="#home" data-theme="" data-icon="home" > CHEKIN </a> </li>
+        <li> <a href="#infoVoli" data-theme="" data-icon="check"  class="ui-btn-active ui-state-persist" > VOLI </a> </li>
+      <li> <a href="#offerte" data-theme="" data-icon="check"  > OFFERTE </a> </li>
       </ul>
-    </div>
   </div>
 </div>
 <div data-role="dialog" id="detailVolo">
@@ -174,6 +173,55 @@
     <h3>Errore</h3>
   </div>
   <div data-role="content" id="logMsg"> </div>
+</div>
+
+
+<!-- OFFERTE -->
+<div data-role="page" id="offerte">
+  <div data-role="header">
+    <h1>Offerte</h1>
+   <a data-icon="refresh" data-iconpos="right" name="btn_getBoard" id="btn_getBoard" onClick="loadOfferte();" class="ui-btn-right">Ricarica Offerte</a>
+  </div>
+  
+  <div data-role="content" >
+  	 <ul id="list_offerte" data-role="listview" data-inset="true" data-split-icon="arrow-r">
+     
+     
+    </ul>
+  
+  </div>
+  
+  <div  data-role="navbar" data-iconpos="top" data-position="fixed">
+      <ul>
+        <li> <a href="#home" data-theme="" data-icon="home" > CHEKIN </a> </li>
+      <!--  <li> <a href="#infoVoli" data-theme="" data-icon="check"  > VOLI </a> </li>-->
+      <li> <a href="#offerte" data-theme="" data-icon="check"  class="ui-btn-active ui-state-persist" > OFFERTE </a> </li>
+      </ul>
+  </div>
+</div>
+
+
+
+
+<div data-role="page" id="offerteDetail" data-add-back-btn="true">
+  <div data-role="header">
+    <h1>Offerta</h1>
+  </div>
+  
+  <div data-role="content" id="offerteContent">
+  
+  <div id="tpl-offerte">
+      
+      <h1>{{{title}}}</h1>
+      <span>{{{date}}}</span>
+      <img src="{{{thumbnail}}}" style="max-width:100%;height:auto" />
+      <div>{{{content}}}</div>
+  
+    </div>
+    
+  </div>
+ 
+
 </div>
 </body>
 </html>
